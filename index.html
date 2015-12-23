@@ -109,7 +109,9 @@
 
             sass.compile('@import "naut_src";', function(result) {
                 if (result.status == 0) {
-                    $("#output").val(result.text);
+                    $("#output").val(
+                            result.text.substr(1) //Hack to remove an invisible character added at the beginning of the CSS
+                    );
                 } else {
                     $("#output").val(result.formatted );
                 }
