@@ -29,15 +29,37 @@
 
     <div class="row">
         <div id="variables" class="col-sm-12">
-            <h2>Header</h2>
-
             <form id="form">
+                <h2>Header</h2>
+
                 <div class="form-group form-group-lg">
                     <div class="row">
                         <div class="col-xs-4">
                             <label for="input-$header-height">$header-height</label>
-                            <input id="input-$header-height" value="196px"  class="form-control" type="text">
+                            <input id="input-$header-height" placeholder="196px" value="196px"  class="form-control" type="text">
                             <p class="help-block">The pixel height of the header</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Text</h2>
+
+                <div class="form-group form-group-lg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="input-$submit-link-text">$submit-link-text</label>
+                            <input id="input-$submit-link-text" placeholder="Submit Link" value="Submit Link"  class="form-control" type="text">
+                            <p class="help-block">Text on the Submit Link Button</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <label for="input-$submit-text-text">$submit-text-text</label>
+                            <input id="input-$submit-text-text" placeholder="Submit Text" value="Submit Text"  class="form-control" type="text">
+                            <p class="help-block">Text on the Submit Text Button</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <label for="input-$downvote-text">$downvote-text</label>
+                            <input id="input-$downvote-text" placeholder="For content that does not contribute to any discussion." value="For content that does not contribute to any discussion."  class="form-control" type="text">
+                            <p class="help-block">Text on the Downvote Arrow</p>
                         </div>
                     </div>
                 </div>
@@ -86,7 +108,11 @@
             }
 
             sass.compile('@import "naut_src";', function(result) {
-                $("#output").val(result.text);
+                if (result.status == 0) {
+                    $("#output").val(result.text);
+                } else {
+                    $("#output").val(result.formatted );
+                }
             });
         });
     }
@@ -96,7 +122,13 @@
         var result = ''
 
         for (var key in vars) {
-            result += key + ': ' + vars[key] + ';\n'
+            //Wrap the text with quotes
+            //TODO - escape characters (quotes) maybe?
+            if (key.endsWith("-text")) {
+                result += key + ': "' + vars[key] + '";\n'
+            } else {
+                result += key + ': ' + vars[key] + ';\n'
+            }
         }
 
         return result + '\n\n'
