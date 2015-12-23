@@ -1391,7 +1391,7 @@ div.commentarea div.RES-keyNav-activeElement .md {
       height: 76px;
       margin-top: -16px;
       margin-left: -16px;
-      background-color: #fff;
+      background-color: $infobox-bg-color;
       border-radius: 0px 0px 2px 2px;
       box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
     }
@@ -1401,7 +1401,7 @@ div.commentarea div.RES-keyNav-activeElement .md {
     z-index: 100;
     font-family: Lato, arial,verdana,helvetica,sans-serif;
     a {
-      color: #333;
+      color: $infobox-color;
     }
   }
 }
@@ -1409,7 +1409,7 @@ div.commentarea div.RES-keyNav-activeElement .md {
 .titlebox span.subscribers {
   position: absolute;
   z-index: 100;
-  color: #333;
+  color: $infobox-color;
   font-size: 12px;
   top: $header-height + 140;
 }
@@ -2776,12 +2776,10 @@ body.comments-page > .content {margin-top: 8px;}
     height: auto;
     content: "- ";
     margin-left: 4px;
-    .side & {
-      //The flairs in the sidebar
-      margin-left: 0px;
-    }
   }
 }
+
+.side .flair:before {margin-left: 0px;}
 
 
 /* Comments (/r/.../comments) */
