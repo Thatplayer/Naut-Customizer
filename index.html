@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Naut 4.0 Customizer</title>
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        #output {
+            resize: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Naut Customizer</h1>
+
+    <div class="row">
+        <div id="variables" class="col-sm-12">
+            <h2>Header</h2>
+
+            <form id="form">
+                <div class="form-group form-group-lg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="input-$header-height">$header-height</label>
+                            <input id="input-$header-height" value="196px"  class="form-control" type="text">
+                            <p class="help-block">The pixel height of the header</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12">
+            <label>Compressed Output
+                <input type="checkbox" id="compressed">
+            </label>
+
+            <button id="compile" class="btn btn-primary btn-lg">Compile</button>
+
+            <textarea id="output" class="form-control" rows="50"></textarea>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="sassjs/sass.js"></script>
+<script type="application/javascript">
+    var sass = new Sass();
+    sass.preloadFiles('..', '', ['naut_src.scss', 'variables.scss'], function() {
+        sass.compile('@import "naut_src";', function(result) {
+            $("#output").val(result.text);
+        });
+    });
+
+    function updateOutput() {
+        var vars = {}
+
+        $('#variables input')
+                .each(function () {
+                    $(this).val() && (vars[$(this).prev().text()] = $(this).val())
+                });
+
+        sass.writeFile('variables.scss', generateCustomScss(vars), function callback(success) {
+            if ($("#compressed").is(':checked') == true) {
+                sass.options({
+                    style: Sass.style.compressed
+                });
+            } else {
+                sass.options({
+                    style: Sass.style.expanded
+                });
+            }
+
+            sass.compile('@import "naut_src";', function(result) {
+                $("#output").val(result.text);
+            });
+        });
+    }
+
+    //Ripped from Bootstrap customizer
+    function generateCustomScss(vars) {
+        var result = ''
+
+        for (var key in vars) {
+            result += key + ': ' + vars[key] + ';\n'
+        }
+
+        return result + '\n\n'
+    }
+
+    $(function() {
+        $("#compile").click(updateOutput);
+    });
+</script>
+</body>
+</html>
