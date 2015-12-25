@@ -18,19 +18,19 @@ body {
 
 /* General Styles - Links / Buttons / Inputs */
 a {
-  color: #24a0ed;
+  color: $link-color-primary;
   transition: color 0.15s ease;
 }
 
 
 ::-moz-selection {
-  background-color: #0079d3;
+  background-color: $button-color-primary;
   text-shadow: none;
   color: #fff;
 }
 
 ::selection {
-  background-color: #0079d3;
+  background-color: $button-color-primary;
   text-shadow: none;
   color: #fff;
 }
@@ -52,7 +52,7 @@ body .content .text, body .content textarea, body .content input[type=text], bod
 
 body .content .text:focus, body .content textarea:focus, body .content input[type=text]:focus, body .content input[type=password]:focus,
 .side .spacer input:active, body .content input[type=url]:focus {
-  border-color: #24a0ed;
+  border-color: $link-color-primary;
   color: #292f34;
 }
 
@@ -60,7 +60,7 @@ body {
   .btn, button {
     margin: 4px 16px 4px 0px;
     padding: 2px 18px;
-    background-color: #0079d3;
+    background-color: $button-color-primary;
     border: none;
     border-radius: 2px;
     color: #fff;
@@ -78,12 +78,12 @@ body {
 .btn, button {
   &:hover {
     color: #fff;
-    background-color: #158be2;
+    background-color: $button-color-hover;
     box-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
   }
   &:active {
     color: #fff;
-    background-color: #0066b2;
+    background-color: $button-color-active;
     box-shadow: 0 2px 1.5px 0 rgba(0,0,0,.12),0 0px 4px 0 rgba(0,0,0,.12);
   }
 }
@@ -581,12 +581,12 @@ a.thumbnail[href*="reddit.com"] {
   }
 }
 
-body .content .sitetable .link .title a:hover {color: #24a0ed;}
+body .content .sitetable .link .title a:hover {color: $link-color-primary;}
 
 
-/*Unvisited*/	.thing .title.loggedin.click, .thing .title.click, .thing .title.loggedin, .thing .title {color:#24a0ed;}
+/*Unvisited*/	.thing .title.loggedin.click, .thing .title.click, .thing .title.loggedin, .thing .title {color:$link-color-primary;}
 /*Visited  */	.content .thing .title:visited, .content .thing.visited .title {color: #738491;}
-/*Clicking */	.thing .title.loggedin.click:visited, .thing .title.click:visited {color:#24a0ed;}
+/*Clicking */	.thing .title.loggedin.click:visited, .thing .title.click:visited {color:$link-color-primary;}
 
 
 
@@ -601,7 +601,7 @@ body .content .sitetable .link .title a:hover {color: #24a0ed;}
     color: #98abba;
     transition: all 0.15s ease;
     &:hover {
-      color: #24a0ed;
+      color: $link-color-primary;
       text-decoration: none;
     }
   }
@@ -626,8 +626,8 @@ body .content .sitetable .link .title a:hover {color: #24a0ed;}
 
 
 .expando-button:hover {
-  background-color: #0079d3;
-  border-color: #0079d3;
+  background-color: $button-color-primary;
+  border-color: $button-color-primary;
 }
 
 .expando-button.selftext.collapsed 					{background-position: -00px -48px!important;}
@@ -687,7 +687,7 @@ body .content .sitetable .link .title a:hover {color: #24a0ed;}
 
 .link .entry .tagline:first-letter {text-transform: capitalize;}
 .link .entry .tagline time {cursor: help;}
-.link .entry .tagline a:hover {color: #24a0ed;text-decoration: none;}
+.link .entry .tagline a:hover {color: $link-color-primary;text-decoration: none;}
 .link .entry .tagline a.author {margin-right: inherit;}
 
 .link .entry .tagline .userattrs {visibility: hidden;}
@@ -737,7 +737,7 @@ body .content .sitetable .link .title a:hover {color: #24a0ed;}
   transition: all 0.15s ease;
 }
 
-.link .entry .buttons li a:hover {color: #24a0ed;text-decoration: none;}
+.link .entry .buttons li a:hover {color: $link-color-primary;text-decoration: none;}
 
 .entry .buttons li.nsfw-stamp {padding: 0;border-radius: 0;border: none !important;}
 
@@ -758,7 +758,7 @@ body .content .sitetable .link .title a:hover {color: #24a0ed;}
 }
 
 .link .entry .buttons li a.comments {
-  color: #24a0ed;
+  color: $link-color-primary;
   font-weight: bold !important;
   transition: all 0.25s ease-in-out !important;
 }
@@ -813,7 +813,7 @@ body .content .sitetable .link .title a:hover {color: #24a0ed;}
 /*	.link .entry li .comments:hover .newComments {color: #fff !important;} */
 
 /* Flair */
-.link .entry .buttons li a.flairselectbtn {color: #24a0ed;}
+.link .entry .buttons li a.flairselectbtn {color: $link-color-primary;}
 
 /* RES L+C */
 .link .entry .buttons li .redditSingleClick {
@@ -997,7 +997,7 @@ body>.content .link.compressed .midcol {
   h2 {
     margin-bottom: 4px;
     background-color: transparent;
-    color: #24a0ed;
+    color: $link-color-primary;
     text-align: left;
     text-transform: capitalize;
     font-weight: normal;
@@ -1030,7 +1030,7 @@ body>.content .link.compressed .midcol {
 .flairoptionpane ul li .linkflair a.title {
   font-size: 18px !important;
   opacity: 100 !important;
-  color: #24a0ed !important;
+  color: $link-color-primary !important;
 }
 
 .flairselector form {
@@ -1049,7 +1049,7 @@ body>.content .link.compressed .midcol {
 .flairselector form .flairselection .linkflair a.title {
   font-size: 18px !important;
   opacity: 100 !important;
-  color: #24a0ed !important;
+  color: $link-color-primary !important;
   cursor: default;
 }
 
@@ -1063,7 +1063,7 @@ body>.content .link.compressed .midcol {
 .flairselector form .flairselection .flairremove a {
   visibility: visible;
   opacity: 100 !important;
-  color: #24a0ed !important;
+  color: $link-color-primary !important;
   margin-left: -4px;
   text-transform: capitalize;
 }
@@ -1269,7 +1269,7 @@ div.commentarea div.RES-keyNav-activeElement .md {
   padding: 8px 16px;
   line-height: 26px;
   border: none;
-  background-color: #0079d3;
+  background-color: $button-color-primary;
   color: #fff;
   border-radius: 2px;
 }
@@ -1604,7 +1604,7 @@ div.titlebox span.number:after {content: " readers";}
 .morelink {
   position: absolute;
   top: $header-height + 246;
-  background-color: #0079d3;
+  background-color: $button-color-primary;
   background-image: none !important;
   width: 152px;
   height: 36px;
@@ -1617,11 +1617,11 @@ div.titlebox span.number:after {content: " readers";}
   box-shadow: 0 2px 1.5px 0 rgba(0,0,0,.12),0 0px 4px 0 rgba(0,0,0,.12);
   transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
   &:hover {
-    background-color: #158be2;
+    background-color: $button-color-hover;
     box-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2)
   }
   &:active {
-    background-color: #0066b2;
+    background-color: $button-color-active;
     box-shadow: 0 2px 1.5px 0 rgba(0,0,0,.12),0 0px 4px 0 rgba(0,0,0,.12);
   }
   .sidebox.submit.submit-text & {
@@ -1706,7 +1706,7 @@ div.titlebox span.number:after {content: " readers";}
       margin-top: 16px;
     }
     a.flairselectbtn {
-      color: #24a0ed;
+      color: $link-color-primary;
     }
   }
 }
@@ -1741,7 +1741,7 @@ div.titlebox span.number:after {content: " readers";}
   padding: 0 16px;
   width: 100%;
   border-radius: 2px;
-  background-color: #0079d3;
+  background-color: $button-color-primary;
   font-family: verdana,arial,sans-serif;
   color: #fff;
   display: block;
@@ -1755,12 +1755,12 @@ div.titlebox span.number:after {content: " readers";}
 
 
 .side .titlebox .md h3 a:hover {
-  background-color: #158be2;
+  background-color: $button-color-hover;
   box-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2)
 }
 
 .side .titlebox .md h3 a:active {
-  background-color: #0066b2;
+  background-color: $button-color-active;
   box-shadow: 0 2px 1.5px 0 rgba(0,0,0,.12),0 0px 4px 0 rgba(0,0,0,.12);
 }
 
@@ -1769,7 +1769,7 @@ div.titlebox span.number:after {content: " readers";}
   background-color: #FFF;
   border: none;
   border-radius: 2px;
-  color: #24a0ed;
+  color: $link-color-primary;
   font-weight: bold;
   display: block;
   margin: 1.5em 0em;
@@ -1851,7 +1851,7 @@ div.titlebox span.number:after {content: " readers";}
   background-color: #fff;
   a {
     font-size: 14px;
-    color: #24a0ed;
+    color: $link-color-primary;
   }
 }
 
@@ -1927,7 +1927,7 @@ body.comments-page > .content {margin-top: 8px;}
 .drop-choices form:last-of-type a.choice {border-bottom: none;}
 
 .drop-choices a.choice:hover {
-  background-color: #0079d3;
+  background-color: $button-color-primary;
   color: #fff;
 }
 
@@ -1936,7 +1936,7 @@ body.comments-page > .content {margin-top: 8px;}
   font-weight: normal;
 }
 
-.commentarea .menuarea .toggle a:hover, .help-hoverable:hover {color: #24a0ed;}
+.commentarea .menuarea .toggle a:hover, .help-hoverable:hover {color: $link-color-primary;}
 
 .commentarea>.usertext {
   background-color: #FAFAFA !important;
@@ -1961,7 +1961,7 @@ body.comments-page > .content {margin-top: 8px;}
 .commentarea>.usertext textarea:not(:focus) { background: url(%%commentboxbg%%) no-repeat 50% 50%;}
 
 .usertext .bottom-area {width: 504px;}
-.usertext .bottom-area a.reddiquette {color: #24a0ed;}
+.usertext .bottom-area a.reddiquette {color: $link-color-primary;}
 
 .gold-accent.comment-visits-box {
   margin: 0px 0px 12px 0px;
@@ -2064,7 +2064,7 @@ body.comments-page > .content {margin-top: 8px;}
 }
 
 .comment .author:hover {
-  color: #24a0ed;
+  color: $link-color-primary;
   text-decoration: none;
 }
 
@@ -2075,7 +2075,7 @@ body.comments-page > .content {margin-top: 8px;}
 
 .tagline .submitter {
   font-weight: bold;
-  color: #24a0ed;
+  color: $link-color-primary;
 }
 
 
@@ -2112,7 +2112,7 @@ body.comments-page > .content {margin-top: 8px;}
 /* Comment Body Text */
 .comment .usertext .md {color: #292f34;}
 
-.md a {color: #24a0ed;}
+.md a {color: $link-color-primary;}
 .md a:visited {	color: #7D5D8A;}
 
 .md pre {padding: 8px;}
@@ -2150,12 +2150,12 @@ body.comments-page > .content {margin-top: 8px;}
 }
 
 .comment .flat-list li a:hover {
-  color: #24a0ed;
+  color: $link-color-primary;
   text-decoration: none;
 }
 
 .comment .flat-list li a[onclick*="reply"] {
-  color: #24a0ed;
+  color: $link-color-primary;
   font-weight: bold;
   font-size: 11px;
 }
@@ -2163,7 +2163,7 @@ body.comments-page > .content {margin-top: 8px;}
 
 
 
-.deepthread a {color: #24a0ed;}
+.deepthread a {color: $link-color-primary;}
 .morecomments a {color: #738491;}
 
 /* Sidebar stuff */
@@ -2506,13 +2506,13 @@ body.comments-page > .content {margin-top: 8px;}
 }
 
 .combined-search-page .search-result .search-result-header .search-title {
-  color: #24a0ed;
+  color: $link-color-primary;
 }
 
 .combined-search-page .search-result .search-result-meta {color: #738491;}
 
 .combined-search-page .search-result a, .combined-search-page .search-result a>mark {
-  color: #24a0ed;
+  color: $link-color-primary;
 }
 
 .combined-search-page .search-result-subreddit .search-subscribe-button {
@@ -2523,7 +2523,7 @@ body.comments-page > .content {margin-top: 8px;}
 .combined-search-page .search-result-subreddit .search-subscribe-button .add,
 .combined-search-page .search-result-subreddit .search-subscribe-button .add:active
 {
-  background-color: #0079d3;
+  background-color: $button-color-primary;
   border: none;
   border-radius: 2px;
 }
@@ -2535,7 +2535,7 @@ body.comments-page > .content {margin-top: 8px;}
   color: #738491;
 }
 
-.combined-search-page .search-result .search-comments {color: #24a0ed;}
+.combined-search-page .search-result .search-comments {color: $link-color-primary;}
 
 .combined-search-page .search-result.has-thumbnail>.thumbnail {
   margin-left: 0px;
@@ -2608,8 +2608,8 @@ body.comments-page > .content {margin-top: 8px;}
 
 .wiki-page .pageactions .wikiaction-current {
   padding: 10px 16px 9px 16px;
-  border-bottom: 2px solid #24a0ed;
-  color: #24a0ed;
+  border-bottom: 2px solid $link-color-primary;
+  color: $link-color-primary;
 }
 
 .wiki-page .pageactions .wikiaction:hover, .wiki-page .pageactions .wikiaction-current:hover {background-color: rgba(0,0,0,0.05);}
@@ -2645,7 +2645,7 @@ body.comments-page > .content {margin-top: 8px;}
   width: 528px;
   padding: 8px 0;
   .title {
-    color: #24a0ed;
+    color: $link-color-primary;
     text-transform: capitalize;
     padding: 0;
   }
@@ -2658,7 +2658,7 @@ body.comments-page > .content {margin-top: 8px;}
 .usertext .bottom-area a {
   color: #98abba;
   &:hover {
-    color: #24a0ed;
+    color: $link-color-primary;
   }
 }
 
@@ -2678,7 +2678,7 @@ body.comments-page > .content {margin-top: 8px;}
       font-size: 14px;
     }
     &.selected a {
-      color: #24a0ed;
+      color: $link-color-primary;
       background-color: transparent;
       border: none;
     }
@@ -2943,7 +2943,7 @@ html.res-commentBoxes .comment {
 
 .res .RESshortcutside:hover, .res .RESDashboardToggle:hover {
   background-color: transparent;
-  color: #24a0ed;
+  color: $link-color-primary;
 }
 
 .res #progressIndicator {
