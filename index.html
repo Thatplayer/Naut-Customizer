@@ -80,6 +80,19 @@
                         </div>
                     </div>
                 </div>
+
+                <h2>Others</h2>
+
+                <div class="form-group form-group-lg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <input id="input-$include-faq" type="checkbox" checked="checked">
+                            <label for="input-$include-faq">$include-faq</label>
+                            <p class="help-block">Include the FAQ page on the subreddit style CSS</p>
+                        </div>
+                    </div>
+                </div>
+
             </form>
         </div>
         <div class="col-sm-12">
@@ -100,18 +113,21 @@
 <script type="application/javascript">
     var sass = new Sass();
     sass.preloadFiles('..', '', ['naut_src.scss', 'variables.scss'], function() {
-        sass.compile('@import "naut_src";', function(result) {
-            $("#output").val(result.text);
-        });
+        updateOutput();
     });
 
     function updateOutput() {
-        var vars = {}
+        var vars = {};
 
         $('#variables input')
-                .each(function () {
+            .each(function () {
+                if ( $(this).attr("type") == "checkbox") {
+                    //For checkboxes, use the element after instead. Also is either true or false
+                    vars[$(this).next().text()] = $(this).is(':checked');
+                } else {
                     $(this).val() && (vars[$(this).prev().text()] = $(this).val())
-                });
+                }
+            });
 
         sass.writeFile('variables.scss', generateCustomScss(vars), function callback(success) {
             if ($("#compressed").is(':checked') == true) {
@@ -127,7 +143,7 @@
             sass.compile('@import "naut_src";', function(result) {
                 if (result.status == 0) {
                     $("#output").val(
-                            result.text.substr(1) //Hack to remove an invisible character added at the beginning of the CSS
+                            result.text.substr(1) //Hack to remove an invisible character added at the beginning of the CSS, turns out to be the BOM which only shows up on compressed
                     );
                 } else {
                     $("#output").val(result.formatted );
