@@ -142,9 +142,18 @@
 
             sass.compile('@import "naut_src";', function(result) {
                 if (result.status == 0) {
-                    $("#output").val(
-                            result.text.substr(1) //Hack to remove an invisible character added at the beginning of the CSS, turns out to be the BOM which only shows up on compressed
-                    );
+                        if (result.text.substr(0,1) == "@") {
+                            //Expanded output. Format starts with @charset "UTF-8", trim that off because Reddit doesn't like it
+
+                            $("#output").val(
+                                    result.text.substr(18) //Hack to remove an invisible character added at the beginning of the CSS, turns out to be the BOM which only shows up on compressed
+                            );
+                        } else {
+                            //Else compressed output. Format starts with BOM character, remove that.
+                            $("#output").val(
+                                    result.text.substr(1)
+                            );
+                        }
                 } else {
                     $("#output").val(result.formatted );
                 }
