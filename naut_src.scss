@@ -1563,7 +1563,7 @@ div.titlebox span.number:after {content: " readers";}
   width: 32px;
   margin-left: -38px;
   background-image: url(%%spritesheet%%);
-  background-position: -64px -96px;
+  background-position: -64px -98px;
   background-repeat: no-repeat;
   border:none !important;
   border-radius: 16px;
@@ -1571,7 +1571,7 @@ div.titlebox span.number:after {content: " readers";}
   transition: background-color .2s cubic-bezier(.4,0,.2,1);
   &:hover {
     background-image: url(%%spritesheet%%);
-    background-position: -64px -96px;
+    background-position: -64px -98px;
     background-repeat: no-repeat;
     background-color: rgba(158,158,158,.2);
   }
@@ -2729,31 +2729,33 @@ body.comments-page > .content {margin-top: 8px;}
   #image-upload {
     margin: 0em 0em 4em 0em;
   }
-  /* FAQ */
-  &:before {
-    position: fixed;
-    width: 100%;
-    padding: 16px;
-    color: #fff;
-    left: 0px;
-    bottom: 0px;
-    background-color: #2E2F31;
-    content: "Hey! There's a FAQ if you just scroll down a little.";
-    font-size: 18px;
-    z-index: 100;
-  }
-  &:after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 800px;
-    left: 0px;
-    bottom: -1200px;
-    z-index: 100;
-    background-color: #fff;
-    background-image: url(%%faq%%);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
+  @if $include-faq {
+    /* FAQ */
+    &:before {
+      position: fixed;
+      width: 100%;
+      padding: 16px;
+      color: #fff;
+      left: 0px;
+      bottom: 0px;
+      background-color: #2E2F31;
+      content: "Hey! There's a FAQ if you just scroll down a little.";
+      font-size: 18px;
+      z-index: 100;
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 800px;
+      left: 0px;
+      bottom: -1200px;
+      z-index: 100;
+      background-color: #fff;
+      background-image: url(%%faq%%);
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+    }
   }
 }
 
