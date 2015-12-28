@@ -8,8 +8,8 @@ $infobox-bg-color: #fff;
 $infobox-color: #333;
 
 $button-color-primary: #0079d3;
-$button-color-hover: #158be2;
-$button-color-active: #0066b2;
+$button-color-hover: lighten($button-color-primary, 12.75%);
+$button-color-active: darken($button-color-primary, 6.5%);
     
 $link-color-primary: #24a0ed;
 
