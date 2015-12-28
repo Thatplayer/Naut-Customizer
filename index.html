@@ -131,6 +131,8 @@
 
             <button id="compile" class="btn btn-primary btn-lg">Compile</button>
 
+            <button id="download" class="btn btn-success btn-lg">Download</button>
+
             <textarea id="output" class="form-control" rows="50"></textarea>
         </div>
     </div>
@@ -139,55 +141,30 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="sassjs/sass.js"></script>
+<script src="js/jszip.min.js"></script>
+<script src="js/jszip-utils.min.js"></script>
+<script src="js/FileSaver.min.js"></script>
 <script type="application/javascript">
     var sass = new Sass();
     sass.preloadFiles('..', '', ['naut_src.scss', 'variables.scss'], function() {
         updateOutput();
     });
 
-    function updateOutput() {
+    function collectVariables() {
+
         var vars = {};
 
         $('#variables input')
-            .each(function () {
-                if ( $(this).attr("type") == "checkbox") {
-                    //For checkboxes, use the element after instead. Also is either true or false
-                    vars[$(this).next().text()] = $(this).is(':checked');
-                } else {
-                    $(this).val() && (vars[$(this).prev().text()] = $(this).val())
-                }
-            });
-
-        sass.writeFile('variables.scss', generateCustomScss(vars), function callback(success) {
-            if ($("#compressed").is(':checked') == true) {
-                sass.options({
-                    style: Sass.style.compressed
-                });
+        .each(function () {
+            if ( $(this).attr("type") == "checkbox") {
+                //For checkboxes, use the element after instead. Also is either true or false
+                vars[$(this).next().text()] = $(this).is(':checked');
             } else {
-                sass.options({
-                    style: Sass.style.expanded
-                });
+                $(this).val() && (vars[$(this).prev().text()] = $(this).val())
             }
-
-            sass.compile('@import "naut_src";', function(result) {
-                if (result.status == 0) {
-                        if (result.text.substr(0,1) == "@") {
-                            //Expanded output. Format starts with @charset "UTF-8", trim that off because Reddit doesn't like it
-
-                            $("#output").val(
-                                    result.text.substr(18) //Hack to remove an invisible character added at the beginning of the CSS, turns out to be the BOM which only shows up on compressed
-                            );
-                        } else {
-                            //Else compressed output. Format starts with BOM character, remove that.
-                            $("#output").val(
-                                    result.text.substr(1)
-                            );
-                        }
-                } else {
-                    $("#output").val(result.formatted );
-                }
-            });
         });
+
+        return vars;
     }
 
     //Ripped from Bootstrap customizer
@@ -207,8 +184,107 @@
         return result + '\n\n'
     }
 
+
+    //Stolen from jszip downloader example
+    /**
+     * Fetch the content, add it to the JSZip object
+     * and use a jQuery deferred to hold the result.
+     * @param {String} url the url of the content to fetch.
+     * @param {String} filename the filename to use in the JSZip object.
+     * @param {JSZip} zip the JSZip instance.
+     * @return {jQuery.Deferred} the deferred containing the data.
+     */
+    function deferredAddZip(url, filename, zip) {
+        var deferred = $.Deferred();
+        JSZipUtils.getBinaryContent(url, function (err, data) {
+            if(err) {
+                deferred.reject(err);
+            } else {
+                zip.file(filename, data, {binary:true});
+                deferred.resolve(data);
+            }
+        });
+        return deferred;
+    }
+
+    function downloadOutput() {
+        var zip = new JSZip();
+        var deferreds = [];
+        var files = [
+                'commentboxbg.png',
+                'faq.png',
+                'footer.jpg',
+                'headerimg.jpg',
+                'noresults.png',
+                'sidebarimg.png',
+                'spritesheet.png'
+        ];
+        //Start downloading everything
+        $.each(files, function (index, value) {
+            deferreds.push(deferredAddZip('assets/' + value, 'images/' + value, zip));
+        });
+
+        //Start compiling
+        compile(function(result) {
+
+            zip.file('naut.css', result);
+
+            // when everything has been downloaded, we can trigger the dl
+            $.when.apply($, deferreds).done(function () {
+                var blob = zip.generate({type:"blob"});
+
+                saveAs(blob, "naut.zip");
+
+            }).fail(function (err) {
+                $("#output").val(err);
+            });
+
+        });
+
+
+    }
+
+    function compile(successCallback) {
+        var vars = collectVariables();
+
+        sass.writeFile('variables.scss', generateCustomScss(vars), function callback(success) {
+            if ($("#compressed").is(':checked') == true) {
+                sass.options({
+                    style: Sass.style.compressed
+                });
+            } else {
+                sass.options({
+                    style: Sass.style.expanded
+                });
+            }
+            sass.compile('@import "naut_src";', function(result) {
+                if (result.status == 0) {
+                    if (result.text.substr(0,1) == "@") {
+                        //Expanded output. Format starts with @charset "UTF-8", trim that off because Reddit doesn't like it
+                        successCallback(result.text.substr(18));
+                    } else {
+                        //Else compressed output. Format starts with BOM character, remove that.
+                        successCallback(result.text.substr(1));
+                    }
+                } else {
+                    $("#output").val(result.formatted );
+                }
+            });
+        });
+
+
+    }
+
+
+    function updateOutput() {
+        compile(function(result) {
+            $("#output").val(result);
+        });
+    }
+
     $(function() {
         $("#compile").click(updateOutput);
+        $("#download").click(downloadOutput);
     });
 </script>
 </body>
