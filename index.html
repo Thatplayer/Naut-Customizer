@@ -224,6 +224,9 @@
             deferreds.push(deferredAddZip('assets/' + value, 'images/' + value, zip));
         });
 
+        //Add a configuration file to the zip
+        zip.file('config.json', JSON.stringify(collectVariables()));
+
         //Start compiling
         compile(function(result) {
 
