@@ -19,6 +19,7 @@
         #output {
             resize: none;
         }
+
     </style>
 </head>
 
@@ -28,6 +29,12 @@
     <h1>Naut Customizer</h1>
 
     <div class="row">
+        <div id="config-drop" class="col-sm-12 text-center bg-info">
+            <h2>
+                Drop a configuration file here
+            </h2>
+        </div>
+
         <div id="variables" class="col-sm-12">
             <form id="form">
                 <h2>Header</h2>
@@ -285,9 +292,56 @@
         });
     }
 
+
+    function handleConfigFileSelect(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var file = e.originalEvent.dataTransfer.files[0]; //First file
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var text = e.target.result;
+
+            var json = JSON.parse(text);
+
+            updateCustomizerFromJson(json);
+
+            $($("#config-drop").addClass("bg-success").removeClass("bg-info").children()[0]).text("Configuration Loaded");
+        };
+
+        reader.readAsText(file, 'utf-8')
+    }
+
+    function updateCustomizerFromJson(data) {
+        for (var i in data) {
+            var field = $('#input-\\' + i); //Escape the $ at the beginning
+
+            if (field == null) {
+                continue;
+            }
+
+            if ( field.attr("type") == "checkbox") {
+                field.prop('checked', data[i])
+            } else {
+                field.val(data[i]);
+            }
+
+        }
+        updateOutput();
+    }
+
+
+    function handleConfigDragOver(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.originalEvent.dataTransfer.dropEffect = 'copy';
+    }
+
     $(function() {
         $("#compile").click(updateOutput);
         $("#download").click(downloadOutput);
+        $("#config-drop").on('dragover', handleConfigDragOver).on("drop", handleConfigFileSelect);
     });
 </script>
 </body>
