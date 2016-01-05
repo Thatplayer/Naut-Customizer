@@ -50,14 +50,17 @@
                         Subreddit
                     </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-6">
                     <input class="form-control" id="subreddit" placeholder="pics">
                 </div>
                 <div class="col-sm-2">
                     <button class="btn btn-success btn-lg btn-block" id="deploy-action">Go</button>
                 </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-danger btn-lg btn-block" id="upload-action">Upload Images</button>
+                </div>
                 <div class="col-sm-12">
-                    Be careful, this will overwrite all stylesheet modifications. Also double check that the images are uploaded
+                    Be careful, this will overwrite all stylesheet modifications and images. Also double check that the images are uploaded first before you do the CSS
                 </div>
             </div>
         </div>
@@ -379,6 +382,49 @@
         e.originalEvent.dataTransfer.dropEffect = 'copy';
     }
 
+    function uploadImages() {
+
+        var deferreds = [];
+        var files = [
+            'commentboxbg.png',
+            'faq.png',
+            'footer.jpg',
+            'headerimg.jpg',
+            'noresults.png',
+            'sidebarimg.png',
+            'spritesheet.png'
+        ];
+        //Start downloading everything
+        $.each(files, function (index, value) {
+            var xhr = new window.XMLHttpRequest();
+            xhr.open('GET', 'assets/' + value, true);
+            xhr.responseType = "blob";
+
+            var match = value.match(/(.*?)\./);
+            var name = match ? match[1] : '';
+
+
+            xhr.onload = function(event) {
+                reddit('/r/$subreddit/api/upload_sr_img').post({
+                    $subreddit: $("#subreddit").val(),
+                    file: Snoocore.file(value, xhr.response.type, xhr.response),
+                    name: name
+                }).tap(function(result) {
+                    console.log(result);
+                }).catch(function(error) {
+                    console.log(error);
+                });
+
+            }
+
+            xhr.send();
+
+
+            deferreds.push(xhr);
+        });
+
+    }
+
     $(function() {
         $("#compile").click(updateOutput);
         $("#download").click(downloadOutput);
@@ -407,7 +453,9 @@
                             alert("Failed. Please double check you entered in your subreddit name correctly and that you are a moderator");
                         });
                     })
-                })
+                });
+
+                $("#upload-action").click(uploadImages);
 
 
             });
