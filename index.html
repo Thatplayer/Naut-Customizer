@@ -35,6 +35,33 @@
             </h2>
         </div>
 
+        <div id="auther" class="col-sm-12 bg-warning">
+            <a id="reddit-auth" class="btn btn-success btn-block btn-lg"> Authenticate on Reddit for deployment </a>
+            This will redirect you, so save your work first.
+        </div>
+
+        <div id="deployer" class="col-sm-12 bg-success hidden">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Deploy to subreddit</h2>
+                </div>
+                <div class="col-sm-2">
+                    <label for="subreddit">
+                        Subreddit
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" id="subreddit" placeholder="pics">
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-success btn-lg btn-block" id="deploy-action">Go</button>
+                </div>
+                <div class="col-sm-12">
+                    Be careful, this will overwrite all stylesheet modifications. Also double check that the images are uploaded
+                </div>
+            </div>
+        </div>
+
         <div id="variables" class="col-sm-12">
             <form id="form">
                 <h2>Header</h2>
@@ -151,10 +178,24 @@
 <script src="js/jszip.min.js"></script>
 <script src="js/jszip-utils.min.js"></script>
 <script src="js/FileSaver.min.js"></script>
+<script src="js/Snoocore-browser.min.js"></script>
 <script type="application/javascript">
     var sass = new Sass();
     sass.preloadFiles('..', '', ['naut_src.scss', 'variables.scss'], function() {
         updateOutput();
+    });
+    var Snoocore = window.Snoocore;
+
+    //TR8U5SfLHBB-gw
+    var reddit = new Snoocore({
+        userAgent: 'nautCustomizer',
+        oauth: {
+            type: 'implicit',
+            mobile: false,
+            key: '7Ncs3E2-rrZ0aA',
+            redirectUri: 'http://thatplayer.github.io/Naut-Customizer/',
+            scope: [ 'modconfig' ] //modconfig to configure the subreddit
+        }
     });
 
     function collectVariables() {
@@ -342,6 +383,38 @@
         $("#compile").click(updateOutput);
         $("#download").click(downloadOutput);
         $("#config-drop").on('dragover', handleConfigDragOver).on("drop", handleConfigFileSelect);
+
+        // Check if we have an access token in the hash, if so
+        var match = ('' + window.location.hash).match(/access_token=(.*?)&/);
+        var accessToken = match ? match[1] : '';
+
+        if (accessToken) {
+            reddit.auth(accessToken).then(function() {
+                //Successful auth
+                $("#auther").addClass("hidden");
+                $("#deployer").removeClass("hidden");
+
+                $("#deploy-action").click(function() {
+                    compile(function(result) {
+                        reddit('/r/$subreddit/api/subreddit_stylesheet').post(
+                                {
+                                    $subreddit: $("#subreddit").val(),
+                                    op: 'save',
+                                    reason: 'Naut Customizer update',
+                                    stylesheet_contents: result
+                                }
+                        ).catch(function(error) {
+                            alert("Failed. Please double check you entered in your subreddit name correctly and that you are a moderator");
+                        });
+                    })
+                })
+
+
+            });
+        }
+
+        $("#reddit-auth").attr("href", reddit.getAuthUrl());
+
     });
 </script>
 </body>
