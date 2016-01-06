@@ -19,6 +19,7 @@
         #output {
             resize: none;
         }
+
     </style>
 </head>
 
@@ -28,6 +29,42 @@
     <h1>Naut Customizer</h1>
 
     <div class="row">
+        <div id="config-drop" class="col-sm-12 text-center bg-info">
+            <h2>
+                Drop a configuration file here
+            </h2>
+        </div>
+
+        <div id="auther" class="col-sm-12 bg-warning">
+            <a id="reddit-auth" class="btn btn-success btn-block btn-lg"> Authenticate on Reddit for deployment </a>
+            This will redirect you, so save your work first.
+        </div>
+
+        <div id="deployer" class="col-sm-12 bg-success hidden">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Deploy to subreddit</h2>
+                </div>
+                <div class="col-sm-2">
+                    <label for="subreddit">
+                        Subreddit
+                    </label>
+                </div>
+                <div class="col-sm-6">
+                    <input class="form-control" id="subreddit" placeholder="pics">
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-success btn-lg btn-block" id="deploy-action">Go</button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-danger btn-lg btn-block" id="upload-action">Upload Images</button>
+                </div>
+                <div class="col-sm-12">
+                    Be careful, this will overwrite all stylesheet modifications and images. Also double check that the images are uploaded first before you do the CSS
+                </div>
+            </div>
+        </div>
+
         <div id="variables" class="col-sm-12">
             <form id="form">
                 <h2>Header</h2>
@@ -144,10 +181,24 @@
 <script src="js/jszip.min.js"></script>
 <script src="js/jszip-utils.min.js"></script>
 <script src="js/FileSaver.min.js"></script>
+<script src="js/Snoocore-browser.min.js"></script>
 <script type="application/javascript">
     var sass = new Sass();
     sass.preloadFiles('..', '', ['naut_src.scss', 'variables.scss'], function() {
         updateOutput();
+    });
+    var Snoocore = window.Snoocore;
+
+    //TR8U5SfLHBB-gw
+    var reddit = new Snoocore({
+        userAgent: 'nautCustomizer',
+        oauth: {
+            type: 'implicit',
+            mobile: false,
+            key: '7Ncs3E2-rrZ0aA',
+            redirectUri: 'http://thatplayer.github.io/Naut-Customizer/',
+            scope: [ 'modconfig' ] //modconfig to configure the subreddit
+        }
     });
 
     function collectVariables() {
@@ -224,6 +275,9 @@
             deferreds.push(deferredAddZip('assets/' + value, 'images/' + value, zip));
         });
 
+        //Add a configuration file to the zip
+        zip.file('config.json', JSON.stringify(collectVariables()));
+
         //Start compiling
         compile(function(result) {
 
@@ -282,9 +336,133 @@
         });
     }
 
+
+    function handleConfigFileSelect(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var file = e.originalEvent.dataTransfer.files[0]; //First file
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var text = e.target.result;
+
+            var json = JSON.parse(text);
+
+            updateCustomizerFromJson(json);
+
+            $($("#config-drop").addClass("bg-success").removeClass("bg-info").children()[0]).text("Configuration Loaded");
+        };
+
+        reader.readAsText(file, 'utf-8')
+    }
+
+    function updateCustomizerFromJson(data) {
+        for (var i in data) {
+            var field = $('#input-\\' + i); //Escape the $ at the beginning
+
+            if (field == null) {
+                continue;
+            }
+
+            if ( field.attr("type") == "checkbox") {
+                field.prop('checked', data[i])
+            } else {
+                field.val(data[i]);
+            }
+
+        }
+        updateOutput();
+    }
+
+
+    function handleConfigDragOver(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.originalEvent.dataTransfer.dropEffect = 'copy';
+    }
+
+    function uploadImages() {
+
+        var deferreds = [];
+        var files = [
+            'commentboxbg.png',
+            'faq.png',
+            'footer.jpg',
+            'headerimg.jpg',
+            'noresults.png',
+            'sidebarimg.png',
+            'spritesheet.png'
+        ];
+        //Start downloading everything
+        $.each(files, function (index, value) {
+            var xhr = new window.XMLHttpRequest();
+            xhr.open('GET', 'assets/' + value, true);
+            xhr.responseType = "blob";
+
+            var match = value.match(/(.*?)\./);
+            var name = match ? match[1] : '';
+
+
+            xhr.onload = function(event) {
+                reddit('/r/$subreddit/api/upload_sr_img').post({
+                    $subreddit: $("#subreddit").val(),
+                    file: Snoocore.file(value, xhr.response.type, xhr.response),
+                    name: name
+                }).tap(function(result) {
+                    console.log(result);
+                }).catch(function(error) {
+                    console.log(error);
+                });
+
+            }
+
+            xhr.send();
+
+
+            deferreds.push(xhr);
+        });
+
+    }
+
     $(function() {
         $("#compile").click(updateOutput);
         $("#download").click(downloadOutput);
+        $("#config-drop").on('dragover', handleConfigDragOver).on("drop", handleConfigFileSelect);
+
+        // Check if we have an access token in the hash, if so
+        var match = ('' + window.location.hash).match(/access_token=(.*?)&/);
+        var accessToken = match ? match[1] : '';
+
+        if (accessToken) {
+            reddit.auth(accessToken).then(function() {
+                //Successful auth
+                $("#auther").addClass("hidden");
+                $("#deployer").removeClass("hidden");
+
+                $("#deploy-action").click(function() {
+                    compile(function(result) {
+                        reddit('/r/$subreddit/api/subreddit_stylesheet').post(
+                                {
+                                    $subreddit: $("#subreddit").val(),
+                                    op: 'save',
+                                    reason: 'Naut Customizer update',
+                                    stylesheet_contents: result
+                                }
+                        ).catch(function(error) {
+                            alert("Failed. Please double check you entered in your subreddit name correctly and that you are a moderator");
+                        });
+                    })
+                });
+
+                $("#upload-action").click(uploadImages);
+
+
+            });
+        }
+
+        $("#reddit-auth").attr("href", reddit.getAuthUrl());
+
     });
 </script>
 </body>
