@@ -1,0 +1,53 @@
+.hidden {
+    display: none!important;
+}
+
+.help-block { margin-top: 0 }
+
+header {
+    line-height: 64px;
+    padding: 0 12%;
+    color: #fff;
+    background-color: #2196F3;
+}
+
+header #logo a {
+    display: block;
+    font-size: 24px;
+    color: inherit;
+}
+
+#config-drop {
+    margin: 12px 0;
+    line-height: 100px;
+    text-align: center;
+    border: 6px dashed #E0E0E0;
+    transition: all .4s ease;
+}
+
+#config-drop i { 
+    position: relative;
+    bottom: -10px; 
+    margin-right: 6px;
+}
+
+#config-drop.error  { border-color: #F44336; }
+#config-drop.hover  { border-color: #42A5F5; }
+#config-drop.success  { 
+    border-color: #66BB6A; 
+    border-style: solid;
+    background-color: #66BB6A;
+    line-height: 48px;
+    color: #fff;
+}
+
+.warn { color: #FF5722 }
+
+.toast.error { background-color: #F44336 }
+
+#output {
+    resize: none;
+    height: initial;
+}
+
+[type="checkbox"] + .inline-with-buttons { margin-top: 6px }
