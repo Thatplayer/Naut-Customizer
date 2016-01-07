@@ -315,23 +315,48 @@
         var file = e.originalEvent.dataTransfer.files[0]; //First file
         var reader = new FileReader();
 
-        reader.onload = function (e) {
-            var text = e.target.result;
+        //Chrome gives me application/x-zip-compressed and Firefox gives me application/java-archive
+        if (file.type && ( file.type == "application/x-zip-compressed" || file.type == "application/java-archive") ) {
             try {
-                var json = JSON.parse(text);
+                reader.onload = function (e) {
+                    var load_zip = new JSZip();
+                    load_zip.load(e.target.result);
 
-                updateCustomizerFromJson(json);
 
-                $($("#config-drop").addClass("success").removeClass("error hover").children()[1]).text("Configuration Loaded");
-            }
-            catch(e){
+                    var json = JSON.parse(load_zip.file("config.json").asText());
+                    updateCustomizerFromJson(json);
+
+                    $($("#config-drop").addClass("success").removeClass("error hover").children()[1]).text("Configuration Loaded");
+
+                };
+
+                reader.readAsArrayBuffer(file);
+            } catch(e){
                 console.log(e);
-                 Materialize.toast('There was a problem processing your config file', 4000, 'error')
+                Materialize.toast('There was a problem processing your config file', 4000, 'error')
                 $("#config-drop").removeClass("hover").addClass("error");
             }
-        };
+        } else {
+            //Config.json loading
+            reader.onload = function (e) {
+                var text = e.target.result;
+                try {
+                    var json = JSON.parse(text);
 
-        reader.readAsText(file, 'utf-8')
+                    updateCustomizerFromJson(json);
+
+                    $($("#config-drop").addClass("success").removeClass("error hover").children()[1]).text("Configuration Loaded");
+                }
+                catch(e){
+                    console.log(e);
+                    Materialize.toast('There was a problem processing your config file', 4000, 'error')
+                    $("#config-drop").removeClass("hover").addClass("error");
+                }
+            };
+
+            reader.readAsText(file, 'utf-8')
+        }
+
     }
 
     function updateCustomizerFromJson(data) {
