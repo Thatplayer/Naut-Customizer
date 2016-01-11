@@ -1414,24 +1414,26 @@ div.commentarea div.RES-keyNav-activeElement .md {
   top: $header-height + 140;
 }
 
-div.titlebox span.word {display: none;}
 .titlebox .users-online {display: inline;}
 .titlebox .users-online:before {display: none;}
 div.titlebox span.number:after {content: " " + $reader-text;}
-.titlebox .users-online .number {font-style: italic;}
-
-.titlebox .users-online .number:before {
-  content: "";
-  width: 16px;
-  height: 9px;
-  display: inline-block;
-  margin-right: 8px;
-  background-image: url(%%spritesheet%%);
-  background-position: -64px -36px;
+.titlebox .users-online .number {
+  font-style: italic;
+  &:before {
+    content: "";
+    width: 16px;
+    height: 9px;
+    display: inline-block;
+    margin-right: 8px;
+    background-image: url(%%spritesheet%%);
+    background-position: -64px -36px;
+  }
+  &:after {
+    content: " " + $currently-online-text;
+  }
 }
 
-.titlebox .users-online .number:after {content: " " + $currently-online-text;}
-.titlelebox .word {display: none;}
+.titlebox .word {display: none;}
 .titlebox .users-online, .titlebox .number {cursor: text;}
 
 
