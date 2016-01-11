@@ -328,22 +328,34 @@ a.random.choice {
   margin: 0 8px 0 0;
   vertical-align: top;
   font-size: 0px;
+  &:hover {
+    background-position: -122px 0px;
+  }
 }
 
-#header-img.default-header:hover, #header-img:hover {background-position: -122px 0px;}
 
 /* Reddit Name */
 #header .pagename {
   font-size: 0;
   a {
     display: inline-block;
-    line-height: 42px;
-    color: #fff;
-    font-size: 42px;
-    font-weight: bold;
-    font-family: Lato, arial, sans-serif;
-    font-variant: normal;
-    text-shadow: 0px 1px 12px rgba(0, 0, 0, 0.2);
+    @if ($custom-title == false) {
+      line-height: 42px;
+      color: #fff;
+      font-size: 42px;
+      font-weight: bold;
+      font-family: Lato, arial, sans-serif;
+      font-variant: normal;
+      text-shadow: 0px 1px 12px rgba(0, 0, 0, 0.2);
+    } @else {
+      //https://www.reddit.com/r/naut/wiki/subtitle
+      height: 42px;
+      width: 320px;
+      background-image: url(%%title%%);
+      background-repeat: no-repeat;
+      background-size: auto 42px;
+      text-indent: -9999px;
+    }
   }
 }
 
