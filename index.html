@@ -385,6 +385,14 @@
                     var json = JSON.parse(load_zip.file("config.json").asText());
                     updateCustomizerFromJson(json);
 
+
+                    $("#images img").each(function (index) {
+                        var imageData = load_zip.file('images/' + $(this).attr("title"));
+                        if (imageData != null) {
+                            $(this).attr('src', URL.createObjectURL(new Blob([imageData.asArrayBuffer()])));
+                        }
+
+                    });
                     $($("#config-drop").addClass("success").removeClass("error hover").children()[1]).text("Configuration Loaded");
 
                 };
