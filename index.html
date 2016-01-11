@@ -508,6 +508,7 @@
         var name = $(e.target).attr('name');
         var preview = $("#image-" + name + " img");
         preview.attr("src", URL.createObjectURL(e.target.files[0]));
+        Materialize.toast('Remember to upload the images to the subreddit before trying to update the stylesheet', 4000)
     }
 
     $(function() {
