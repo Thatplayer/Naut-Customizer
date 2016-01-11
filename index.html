@@ -254,26 +254,32 @@
 
             zip.file('naut.css', result);
 
-            // when everything has been downloaded, we can trigger the dl
-            $.when.apply($, deferreds).done(function () {
-                var blob = zip.generate({type:"blob"});
+            compile (function(result) {
 
-                saveAs(blob, "naut.zip");
+                zip.file('naut.min.css', result);
 
-            }).fail(function (err) {
-                $("#output").val(err);
-            });
+                // when everything has been downloaded, we can trigger the dl
+                $.when.apply($, deferreds).done(function () {
+                    var blob = zip.generate({type:"blob"});
 
-        });
+                    saveAs(blob, "naut.zip");
+
+                }).fail(function (err) {
+                    $("#output").val(err);
+                });
+
+            }, true);
+
+        }, false);
 
 
     }
 
-    function compile(successCallback) {
+    function compile(successCallback, compressed) {
         var vars = collectVariables();
 
         sass.writeFile('variables.scss', generateCustomScss(vars), function callback(success) {
-            if ($("#compressed").is(':checked') == true) {
+            if (typeof compressed != 'undefined' && compressed) {
                 sass.options({
                     style: Sass.style.compressed
                 });
@@ -304,7 +310,7 @@
     function updateOutput() {
         compile(function(result) {
             $("#output").val(result);
-        });
+        }, $("#compressed").is(':checked'));
     }
 
 
@@ -459,7 +465,7 @@
                         ).catch(function(error) {
                             alert("Failed. Please double check you entered in your subreddit name correctly and that you are a moderator");
                         });
-                    })
+                    }, true)
                 });
 
                 $("#upload-action").click(uploadImages);
