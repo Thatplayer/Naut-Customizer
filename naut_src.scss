@@ -1412,6 +1412,15 @@ div.commentarea div.RES-keyNav-activeElement .md {
     top: $header-height + 112;
     z-index: 100;
     font-family: Lato, arial,verdana,helvetica,sans-serif;
+    @if ($custom-title) {
+      display: block;
+      height: 22px;
+      width: 176px;
+      background-image: url(%%title%%);
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+      text-indent: -9999px;
+    }
     a {
       color: $infobox-color;
     }
