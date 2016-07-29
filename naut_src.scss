@@ -1,9 +1,10 @@
 /*
         Version 4.0
         Stylesheet by Cryptonaut
-        Last modified: 21 December 2015
-        Details: This is a custom template made by /u/Cryptonaut.
-        Find out more on /r/Naut.
+        Assisted by RenegadeAI & LackingAGoodName
+        Last modified: 26 July 2016
+        Details: This is a custom template made by /u/Cryptonaut
+        Find out more on /r/Naut
 
         -------------------------------------------------------------------------- */
 @import 'variables';
@@ -57,7 +58,7 @@ body .content .text:focus, body .content textarea:focus, body .content input[typ
 }
 
 body {
-  .btn, button {
+  .btn, button, .c-btn-primary {
     margin: 4px 16px 4px 0px;
     padding: 2px 18px;
     background-color: $button-color-primary;
@@ -75,7 +76,7 @@ body {
   }
 }
 
-.btn, button {
+.btn, button, .c-btn-primary {
   &:hover {
     color: #fff;
     background-color: $button-color-hover;
@@ -86,6 +87,10 @@ body {
     background-color: $button-color-active;
     box-shadow: 0 2px 1.5px 0 rgba(0,0,0,.12),0 0px 4px 0 rgba(0,0,0,.12);
   }
+}
+
+.c-btn-primary:active {
+  margin-top: 4px
 }
 
 /* Header */
@@ -412,7 +417,7 @@ a.random.choice {
 
 
 .listing-page .tabmenu li > a[href$="/controversial/"], .wiki-page .tabmenu li > a[href$="/controversial/"],
-.listing-page .tabmenu li > a[href$="/promoted/"], .wiki-page .tabmenu li > a[href$="/promoted/"]
+.listing-page .tabmenu li > a[href$="/ads/"], .wiki-page .tabmenu li > a[href$="/ads/"]
 {display:none!important;}
 
 
@@ -544,7 +549,9 @@ body >.content .link .rank, .rank-spacer {display: none;}
     min-height: 56px;
     min-width: 80px;
     max-width: none;
-    max-height: 56px;
+    position: relative;
+    transform: translateY(-50%);
+    top: 50%;
   }
   .stickied &, &.default, &.self, .over18.link & {
     width: 80px;
@@ -705,14 +712,14 @@ body .content .sitetable .link .title a:hover {color: $link-color-primary;}
 .link .entry .tagline .userattrs {visibility: hidden;}
 .link .entry .tagline .userattrs a {
   visibility: visible;
-  font-size: 10px;
-  padding: 1px 3px 1px 2px;
-  margin-left: 2px;
-  background-color: #f00;
-  color: #fff !important;
-  position: relative;
-  top: -1px;
   cursor: help;
+  display: inline-block;
+  background-color: red;
+  color: #fff !important;
+  line-height: 14px;
+  padding: 0 3px;
+  border-radius: 2px;
+  font-size: 11px;
 }
 
 .link .entry .tagline .userattrs a.moderator {background-color: #27b062;}
@@ -720,16 +727,21 @@ body .content .sitetable .link .title a:hover {color: $link-color-primary;}
 
 
 .RESUserTagImage {
-  height: 10px !important;
-  background-image: url(%%spritesheet%%) !important;
-  background-position: -32px -101px !important;
-  opacity: 0.25 !important;
-  margin-left: 2px !important;
+  &::after {
+    display: none;
+  }
+  vertical-align: top;
+  height: 10px;
+  width: 16px;
+  background-image: url(%%spritesheet%%);
+  background-position: -32px -101px;
+  opacity: 0.25;
+  margin-left: 2px;
   transition: opacity 0.15s ease;
-  margin-top: 1px !important;
+  margin-top: 2px;
 }
 
-.RESUserTagImage:hover {opacity: 1 !important;}
+.RESUserTagImage:hover {opacity: 1; }
 
 
 /* Comment / Share / Report */
@@ -872,39 +884,50 @@ body .content .thing.spam {background-color: #FFE9E6;}
 
 .entry .buttons li.reported-stamp {
   background-color: transparent;
-  border: 1px solid #EDEEEE!important;
-  border-radius: 2px;
-  color: #292f34;
-  line-height: 17px;
+  border: none !important;
+  text-transform: uppercase;
+  color: #F44336;
 }
 
 
-a.pretty-button.negative, a.pretty-button.neutral, a.pretty-button.positive {
+a.pretty-button[class] {
   background-image: none;
-  border-radius: 2px;
-  box-shadow: inset 0px 0px 0px rgba(0, 0, 0, 0.25);
+  border: none;
   color: #fff;
-  line-height: 15px;
-  transition: all 0.1s ease;
+  line-height: 16px;
+  transition: background-color 0.25s ease;
+  border-radius: 0;
+  text-transform: uppercase;
 }
 
-a.pretty-button.negative {background-color: #fb797e;border-color: #fb797e;}
-a.pretty-button.negative:hover {background-color: #fc535a;border-color: #fc535a;}
+a.pretty-button.negative:hover {background-color: #EF5350;}
+a.pretty-button.negative.pressed {background-color: #B71C1C;}
 
-a.pretty-button.neutral {background-color: #dddddd;border-color: #dddddd;color: #4A4F57;}
-a.pretty-button.neutral:hover {background-color: #ececec;border-color: #ececec;}
+a.pretty-button.neutral {background-color: #BDBDBD; color: #212121}
+a.pretty-button.neutral:hover {background-color: #E0E0E0;}ul.report-reasons
 
-a.pretty-button.positive {background-color: #1ecd97;border-color: #1ecd97;}
-a.pretty-button.positive:hover {background-color: #22e1a6;border-color: #22e1a6;}
+a.pretty-button.positive {background-color: #4CAF50;}
+a.pretty-button.positive:hover {background-color: #43A047;}
+a.pretty-button.positive.pressed {background-color: #1B5E20;}
 
 
-a.pretty-button.positive.pressed, a.pretty-button.neutral.pressed, a.pretty-button.negative.pressed {background-image: none;box-shadow: inset 0px 3px 1px rgba(0, 0, 0, 0.15);}
+a.pretty-button.positive.pressed, a.pretty-button.neutral.pressed, a.pretty-button.negative.pressed {background-image: none;}
 
+.big-mod-buttons {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 3px;
+  vertical-align: top;
+  margin-top: -1px;
+}
+
+.big-mod-buttons a { margin: 0; }
+.buttons > .pretty-button { border-radius: 3px; }
 
 ul.report-reasons {
   border-radius: 2px;
-  background-color: transparent;
-  border: 1px solid #edf1f3;
+  background-color: #FAFAFA;
+  border: none;
   padding: 8px;
   font-size: 12px;
   margin-top: 4px;
@@ -926,7 +949,7 @@ ul.report-reasons {
 
 }
 
-.thing.link.stickied a.title, .thing.link.stickied a, .thing.link.stickied .entry li .comments {color: #27b062!important;}
+.thing.link.stickied a.title, .thing.link.stickied li a, .thing.link.stickied .entry li .comments {color: #27b062!important;}
 .thing.link.stickied .expando-button:hover {background-color: #27b062!important;border-color: #27b062!important;}
 .tagline .stickied-tagline {color: #b3b3b3;cursor: help;}
 
@@ -979,9 +1002,14 @@ ul.report-reasons {
 
 /* Compressed post */
 .link.compressed {
-  margin: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  .score {
+    margin: 0 3px 0 0;
+  }
   .entry {
-    padding: 11px 32px 9px 0px;
+    padding: 9px 32px 9px 0px;
   }
   .title {
     margin: 0;
@@ -989,7 +1017,7 @@ ul.report-reasons {
 }
 body>.content .link.compressed .midcol {
   height: auto;
-  margin: 8px 0px 0px 4px;
+  margin: 8px 4px 0px 0px;
 }
 
 /* Flair Selector */
@@ -998,13 +1026,13 @@ body>.content .link.compressed .midcol {
   top: 20% !important;
   left: 50% !important;
   margin-left: -125px;
-  padding: 32px !important;
+  padding: 16px !important;
   width: 250px !important;
   border: none;
   border-radius: 2px;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.12);
   &.drop-choices.active {
-    border: 1px solid #e2e2e2;
+    border: none;
   }
   h2 {
     margin-bottom: 4px;
@@ -1084,6 +1112,20 @@ body>.content .link.compressed .midcol {
 
 .flairselector form .flairselection .flairremove a:hover {text-decoration: underline !important;}
 
+.flairselector .customizer {
+  display: block;
+  margin: 8px 0;
+  width: 100%;
+}
+
+.flairselector .customizer input[type='text'] { width: 100% }
+
+.flairselector form button {
+  display: block;
+  float: right;
+  margin: 0;
+}
+
 .flairselector .error {text-align: left;}
 .flairselector .error:first-letter {text-transform: capitalize;}
 .flairselector .error:after {
@@ -1143,7 +1185,7 @@ div.commentarea div.RES-keyNav-activeElement .md {
 }
 
 .res .commentarea .thing {
-  padding: 16px 16px 0px 14px !important;
+  padding: 14px 16px 8px 8px !important;
 }
 
 .res .commentarea .thing.collapsed {padding-bottom: 16px !important;}
@@ -1550,29 +1592,23 @@ div.titlebox span.number:after {content: " " + $reader-text;}
 }
 
 
-#search input[type="text"]:-moz-placeholder {font-size: 0;}
-#search input[type="text"]::-webkit-input-placeholder {font-size: 0;}
-#search input[type="text"]:-ms-input-placeholder {font-size: 0;}
-
-#search input[type="text"]:-moz-placeholder::after {
+#search input[type="text"]:-moz-placeholder {
   font-size: 14px;
-  content: "Search reddit";
-  position: relative;
+  text-transform: capitalize;
   top: 1px;
+  position: relative;
 }
-
-#search input[type="text"]::-webkit-input-placeholder::after {
+#search input[type="text"]::-webkit-input-placeholder {
   font-size: 14px;
-  content: "Search reddit";
-  position: relative;
+  text-transform: capitalize;
   top: 1px;
+  position: relative;
 }
-
-#search input[type="text"]:-ms-input-placeholder::after {
+#search input[type="text"]:-ms-input-placeholder {
   font-size: 14px;
-  content: "Search reddit";
-  position: relative;
+  text-transform: capitalize;
   top: 1px;
+  position: relative;
 }
 
 
@@ -1658,8 +1694,8 @@ div.titlebox span.number:after {content: " " + $reader-text;}
   }
 }
 
-.sidebox.submit.submit-text .morelink a:after {font-size: 14px; content: $submit-text-text;}
-.sidebox.submit.submit-link .morelink a:after {font-size: 14px; content: $submit-link-text;}
+.sidebox.submit.submit-text .morelink a:before {font-size: 14px; content: $submit-text-text;}
+.sidebox.submit.submit-link .morelink a:before {font-size: 14px; content: $submit-link-text;}
 
 .side .sidebox.submit-text .morelink:before, .side .sidebox.submit-link .morelink:after {
   content: "N/A";
@@ -1771,6 +1807,7 @@ div.titlebox span.number:after {content: " " + $reader-text;}
   margin: 1.5em 0em;
   font-size: 12px;
   line-height: 42px;
+  text-align: center;
 
   box-shadow: 0 2px 1.5px 0 rgba(0,0,0,.12),0 0px 4px 0 rgba(0,0,0,.12);
   transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
@@ -1798,6 +1835,7 @@ div.titlebox span.number:after {content: " " + $reader-text;}
   margin: 1.5em 0em;
   font-size: 12px;
   line-height: 42px;
+  text-align: center;
 
   box-shadow: 0 2px 1.5px 0 rgba(0,0,0,.12),0 0px 4px 0 rgba(0,0,0,.12);
   transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
@@ -1961,6 +1999,10 @@ body.comments-page > .content {margin-top: 8px;}
 
 .commentarea .menuarea .toggle a:hover, .help-hoverable:hover {color: $link-color-primary;}
 
+.help-hoverable {
+  font-size: x-small;
+}
+
 .commentarea>.usertext {
   background-color: #FAFAFA !important;
   margin: -58px 0 16px 0;
@@ -1977,7 +2019,7 @@ body.comments-page > .content {margin-top: 8px;}
 
 .commentarea .usertext-edit textarea {
   position: relative;
-  z-index: 999;
+  z-index: 0;
   width: 100%;
 }
 
@@ -1994,6 +2036,15 @@ body.comments-page > .content {margin-top: 8px;}
   color: #292f34;
 }
 
+/* Gilding */
+.gilded-icon:before {
+  background: url(%%spritesheet%%);
+  background-position: -112px -160px;
+  height: 16px;
+  width: 16px;
+}
+
+.user-gilded>.entry .gilded-icon:before { width: 16px; }
 
 /* Comments */
 .commentarea .sitetable {
@@ -2002,7 +2053,7 @@ body.comments-page > .content {margin-top: 8px;}
 }
 
 .commentarea .thing {
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
   padding: 8px 16px 8px 0;
 }
 
@@ -2164,6 +2215,8 @@ body.comments-page > .content {margin-top: 8px;}
   padding: 0;
 }
 
+/* Spam comment */
+.comment.spam > .child { padding-left: 0; margin-left: 16px }
 
 /* Reply / Share / report */
 .comment .flat-list li a {
@@ -2317,7 +2370,7 @@ body.comments-page > .content {margin-top: 8px;}
   border:none;
 }
 
-.submit-page .roundfield .title {
+.submit-page .roundfield span.title {
   color: #292f34;
   text-transform: capitalize;
 }
@@ -2366,6 +2419,12 @@ body.comments-page > .content {margin-top: 8px;}
 
 .submit-page .footer-parent {display: none;}
 
+body #newlink-with-image-upload .file-upload-button {
+  padding-right: 18px;
+  line-height: 29px;
+}
+
+#new-link-image-input > div:first-of-type { display: inline-block; padding-right: 16px }
 
 /* Search Page */
 .search-page {
@@ -2659,12 +2718,11 @@ body.comments-page > .content {margin-top: 8px;}
 .wiki-page .wiki-page-content em {color: #98abba;}
 
 /* Subreddit Settings Page + Flair Page + Stylesheet Page */
-.linefield {
+.linefield, .linefield.mobile {
   background-color: #fff;
   color: #98abba;
   margin: 0 0 16px 0;
   width: 528px;
-  padding: 8px 0;
   .title {
     color: $link-color-primary;
     text-transform: capitalize;
@@ -2741,12 +2799,16 @@ body.comments-page > .content {margin-top: 8px;}
   padding: 0;
 }
 
+pre {
+  overflow: hidden;
+}
 
 #images {
   padding: 8px 0;
   background-color: #fff;
-  height: 800px;
   position: relative;
+  overflow: auto;
+  height: inherit;
   #image-upload {
     margin: 0em 0em 4em 0em;
   }
@@ -2868,6 +2930,7 @@ body.comments-page > .content {margin-top: 8px;}
   color: rgba(255, 255, 255, 0.45)!important;
   top: 1px !important;
 }
+.res #RESShortcuts { color: #E0E0E0 }
 
 /* Pinheader */
 .pinHeader-sub #sr-header-area, .pinHeader-subanduser #sr-header-area {background-image: url(%%headerimg%%);background-position: 50% 0%;}
@@ -2945,7 +3008,7 @@ html.res-commentBoxes .comment {
   margin-right: 0px !important;
 }
 
-.res .commentarea .thing {border: none !important;}
+.res .commentarea .thing {border: none !important; border-radius: 2px !important; }
 
 .res .titlebox .tagline {margin-top: 6px;}
 
